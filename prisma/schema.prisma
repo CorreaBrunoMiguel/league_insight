@@ -102,6 +102,8 @@ model Match {
   datasetId Int?
   dataset   Dataset? @relation(fields: [datasetId], references: [id])
 
+  features MatchFeatures[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -169,4 +171,30 @@ model FeatureSchema {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  features MatchFeatures[]
+}
+
+model MatchFeatures {
+  id Int @id @default(autoincrement())
+
+  matchId Int
+  match   Match @relation(fields: [matchId], references: [id])
+
+  featureSchemaId Int
+  featureSchema   FeatureSchema @relation(fields: [featureSchemaId], references: [id])
+
+  // Features básicas (placeholders iniciais)
+  homePoints     Float?
+  awayPoints     Float?
+  homeGoalDiff   Float?
+  awayGoalDiff   Float?
+  homeRecentForm Float?
+  awayRecentForm Float?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([matchId, featureSchemaId])
+  @@index([featureSchemaId])
 }
