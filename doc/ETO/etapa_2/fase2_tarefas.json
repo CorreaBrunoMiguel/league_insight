@@ -20,7 +20,7 @@
       "id": "E2-F2-S1-T2",
       "name": "Modelar partidas (matches) com resultado básico",
       "sprint": 1,
-      "status": "doing",
+      "status": "done",
       "branch_feature": "feature/e2-f2-s1-t2-schema-matches",
       "objective": "Criar o modelo Match com relacionamentos para Season e Times, incluindo gols e resultado 3-way.",
       "criteria": [
@@ -34,7 +34,7 @@
       "id": "E2-F2-S1-T3",
       "name": "Índices e sanidade básica do schema núcleo",
       "sprint": 1,
-      "status": "planned",
+      "status": "doing",
       "branch_feature": "feature/e2-f2-s1-t3-core-indexes",
       "objective": "Adicionar índices e constraints principais para o núcleo League/Season/Team/Match.",
       "criteria": [
