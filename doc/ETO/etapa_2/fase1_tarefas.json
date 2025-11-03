@@ -60,7 +60,7 @@
       "id": "E2-F1-S2-T2",
       "name": "Integrar ORM/query builder e conexão com o banco",
       "sprint": 2,
-      "status": "doing",
+      "status": "done",
       "branch_feature": "feature/e2-f1-s2-t2-orm-setup",
       "objective": "Integrar um ORM/query builder (ex.: Prisma/TypeORM) com o Postgres do projeto.",
       "criteria": [
@@ -73,7 +73,7 @@
       "id": "E2-F1-S2-T3",
       "name": "Checagem de saúde da conexão com o banco",
       "sprint": 2,
-      "status": "planned",
+      "status": "doing",
       "branch_feature": "feature/e2-f1-s2-t3-db-health",
       "objective": "Expor uma forma simples de verificar se a aplicação consegue se conectar ao Postgres.",
       "criteria": [
