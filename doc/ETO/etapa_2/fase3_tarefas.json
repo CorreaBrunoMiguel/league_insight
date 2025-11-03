@@ -1,0 +1,124 @@
+{
+  "etapa": 2,
+  "fase": 3,
+  "nome_fase": "Pipelines de Ingestão Histórica & Temporada Atual",
+  "tarefas": [
+    {
+      "id": "E2-F3-S1-T1",
+      "name": "Job de ingestão de 1 temporada histórica (prova de conceito)",
+      "sprint": 1,
+      "status": "planned",
+      "branch_feature": "feature/e2-f3-s1-t1-ingest-single-season",
+      "objective": "Implementar um job que ingere uma temporada histórica única em League, Season, Team e Match e registra um Dataset HISTORICAL.",
+      "criteria": [
+        "Job lê dados de uma temporada histórica a partir da fonte escolhida",
+        "Registros de League, Season, Team e Match criados/coerentes",
+        "Um Dataset com type=HISTORICAL e status=OK criado ao final da execução"
+      ]
+    },
+    {
+      "id": "E2-F3-S1-T2",
+      "name": "Generalizar ingestão para múltiplas temporadas históricas",
+      "sprint": 1,
+      "status": "planned",
+      "branch_feature": "feature/e2-f3-s1-t2-ingest-multi-seasons",
+      "objective": "Permitir que o job de ingestão processe várias temporadas históricas em sequência.",
+      "criteria": [
+        "Job aceita uma lista de anos/temporadas para ingestão",
+        "Para cada temporada, um Dataset HISTORICAL é criado ou reutilizado conforme necessário",
+        "Ligas e times não são duplicados desnecessariamente"
+      ]
+    },
+    {
+      "id": "E2-F3-S1-T3",
+      "name": "Logging e idempotência básica dos jobs históricos",
+      "sprint": 1,
+      "status": "planned",
+      "branch_feature": "feature/e2-f3-s1-t3-ingest-logging-idempotency",
+      "objective": "Adicionar logging estruturado e proteção contra reprocessamento acidental de temporadas históricas.",
+      "criteria": [
+        "Job registra início/fim, contagem de jogos e tempo de execução",
+        "Ao detectar Dataset existente para a mesma temporada, o job possui comportamento configurável (pular/atualizar)",
+        "Existe uma interface de CLI clara para rodar o job com parâmetros"
+      ]
+    },
+    {
+      "id": "E2-F3-S2-T1",
+      "name": "Job de reconstrução de standings para 1 temporada",
+      "sprint": 2,
+      "status": "planned",
+      "branch_feature": "feature/e2-f3-s2-t1-build-standings-single-season",
+      "objective": "Implementar job que reconstrói a classificação rodada a rodada para uma temporada e popula StandingSnapshot.",
+      "criteria": [
+        "Job percorre as rodadas em ordem e acumula estatísticas por time",
+        "Tabelas StandingSnapshot são preenchidas para cada rodada/time",
+        "Unicidade por (seasonId, round, teamId) é respeitada sem erro"
+      ]
+    },
+    {
+      "id": "E2-F3-S2-T2",
+      "name": "Checks de consistência por temporada",
+      "sprint": 2,
+      "status": "planned",
+      "branch_feature": "feature/e2-f3-s2-t2-standings-consistency-checks",
+      "objective": "Adicionar verificações de consistência para seasons, com foco em pontos, número de jogos e integridade de standings.",
+      "criteria": [
+        "Existem checks de contagem de jogos por temporada",
+        "Somatório de pontos por rodada é coerente com o formato da liga",
+        "Erros de consistência são logados de forma clara"
+      ]
+    },
+    {
+      "id": "E2-F3-S2-T3",
+      "name": "Integração pipelines históricos + standings",
+      "sprint": 2,
+      "status": "planned",
+      "branch_feature": "feature/e2-f3-s2-t3-integrate-ingest-and-standings",
+      "objective": "Costurar os jobs de ingestão histórica e reconstrução de standings em um fluxo coerente.",
+      "criteria": [
+        "Ao finalizar ingestão de uma temporada, o job de standings é disparado",
+        "Dataset é marcado como pronto apenas após standings geradas com sucesso",
+        "Falhas são refletidas em Dataset.status=FAILED quando apropriado"
+      ]
+    },
+    {
+      "id": "E2-F3-S3-T1",
+      "name": "Job de ingestão da temporada atual (estado inicial)",
+      "sprint": 3,
+      "status": "planned",
+      "branch_feature": "feature/e2-f3-s3-t1-current-season-bootstrap",
+      "objective": "Ingerir a temporada atual até a rodada mais recente e registrar Dataset CURRENT_SEASON.",
+      "criteria": [
+        "Season atual é criada ou localizada corretamente",
+        "Matches e StandingSnapshot são populados até a rodada mais recente disponível",
+        "Dataset com type=CURRENT_SEASON é criado com status=OK"
+      ]
+    },
+    {
+      "id": "E2-F3-S3-T2",
+      "name": "Ingestão incremental de novas rodadas",
+      "sprint": 3,
+      "status": "planned",
+      "branch_feature": "feature/e2-f3-s3-t2-current-season-incremental",
+      "objective": "Permitir ingestão apenas das novas rodadas concluídas da temporada atual.",
+      "criteria": [
+        "Job identifica quais rodadas ainda não foram ingeridas",
+        "Novos jogos são inseridos sem duplicar partidas existentes",
+        "StandingSnapshot é atualizado somente para as rodadas novas"
+      ]
+    },
+    {
+      "id": "E2-F3-S3-T3",
+      "name": "Rotina unificada de atualização da temporada atual",
+      "sprint": 3,
+      "status": "planned",
+      "branch_feature": "feature/e2-f3-s3-t3-current-season-update-runner",
+      "objective": "Oferecer uma entrada única para atualizar a temporada atual (ingestão incremental + standings + Dataset).",
+      "criteria": [
+        "Existe um comando único para atualizar a temporada atual",
+        "Esse comando executa ingestão incremental e atualização de standings",
+        "Dataset e logs refletem claramente cada execução da rotina"
+      ]
+    }
+  ]
+}
