@@ -47,7 +47,7 @@
       "id": "E2-F2-S2-T1",
       "name": "Tabela de datasets versionados",
       "sprint": 2,
-      "status": "doing",
+      "status": "done",
       "branch_feature": "feature/e2-f2-s2-t1-datasets-table",
       "objective": "Criar o modelo Dataset para registrar ingestões com fonte, temporada e status.",
       "criteria": [
@@ -60,7 +60,7 @@
       "id": "E2-F2-S2-T2",
       "name": "Tabela de snapshots de tabela",
       "sprint": 2,
-      "status": "planned",
+      "status": "doing",
       "branch_feature": "feature/e2-f2-s2-t2-standing-snapshots",
       "objective": "Criar o modelo StandingSnapshot representando a classificação por rodada.",
       "criteria": [
