@@ -60,7 +60,7 @@
       "id": "E2-F2-S2-T2",
       "name": "Tabela de snapshots de tabela",
       "sprint": 2,
-      "status": "doing",
+      "status": "done",
       "branch_feature": "feature/e2-f2-s2-t2-standing-snapshots",
       "objective": "Criar o modelo StandingSnapshot representando a classificação por rodada.",
       "criteria": [
@@ -73,7 +73,7 @@
       "id": "E2-F2-S2-T3",
       "name": "Amarrar matches e datasets",
       "sprint": 2,
-      "status": "planned",
+      "status": "doing",
       "branch_feature": "feature/e2-f2-s2-t3-match-dataset-link",
       "objective": "Adicionar relacionamento entre Match e Dataset para rastrear a origem dos dados de cada partida.",
       "criteria": [
