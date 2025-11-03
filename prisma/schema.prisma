@@ -37,9 +37,9 @@ model League {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  seasons Season[]
-  teams   Team[]
-  Dataset Dataset[]
+  seasons  Season[]
+  teams    Team[]
+  datasets Dataset[]
 }
 
 model Season {
@@ -54,8 +54,8 @@ model Season {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  matches Match[]
-  dataset Dataset[]
+  matches  Match[]
+  datasets Dataset[]
 
   standings StandingSnapshot[]
 }
