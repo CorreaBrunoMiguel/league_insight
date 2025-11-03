@@ -1,6 +1,7 @@
 generator client {
   provider = "prisma-client-js"
 }
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -9,4 +10,44 @@ datasource db {
 model AppInit {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
+}
+
+model League {
+  id        Int      @id @default(autoincrement())
+  name      String
+  code      String   @unique
+  country   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  seasons Season[]
+  teams   Team[]
+}
+
+model Season {
+  id        Int       @id @default(autoincrement())
+  leagueId  Int
+  league    League    @relation(fields: [leagueId], references: [id])
+  year      Int
+  name      String
+  startDate DateTime?
+  endDate   DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Team {
+  id        Int     @id @default(autoincrement())
+  name      String
+  shortName String?
+  code      String? @unique
+  country   String?
+  state     String
+
+  leagueId Int?
+  league   League? @relation(fields: [leagueId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
