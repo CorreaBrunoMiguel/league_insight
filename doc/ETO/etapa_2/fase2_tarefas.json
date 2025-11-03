@@ -34,7 +34,7 @@
       "id": "E2-F2-S1-T3",
       "name": "Índices e sanidade básica do schema núcleo",
       "sprint": 1,
-      "status": "doing",
+      "status": "done",
       "branch_feature": "feature/e2-f2-s1-t3-core-indexes",
       "objective": "Adicionar índices e constraints principais para o núcleo League/Season/Team/Match.",
       "criteria": [
@@ -47,7 +47,7 @@
       "id": "E2-F2-S2-T1",
       "name": "Tabela de datasets versionados",
       "sprint": 2,
-      "status": "planned",
+      "status": "doing",
       "branch_feature": "feature/e2-f2-s2-t1-datasets-table",
       "objective": "Criar o modelo Dataset para registrar ingestões com fonte, temporada e status.",
       "criteria": [
