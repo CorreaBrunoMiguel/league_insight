@@ -55,7 +55,7 @@ model Season {
   updatedAt DateTime @updatedAt
 
   matches Match[]
-  Dataset Dataset[]
+  dataset Dataset[]
 
   standings StandingSnapshot[]
 }
@@ -99,6 +99,9 @@ model Match {
 
   result MatchResult
 
+  datasetId Int?
+  dataset   Dataset? @relation(fields: [datasetId], references: [id])
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -123,6 +126,8 @@ model Dataset {
   ingestedAt DateTime? // quando a ingestão terminou
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
+
+  matches Match[]
 }
 
 model StandingSnapshot {
