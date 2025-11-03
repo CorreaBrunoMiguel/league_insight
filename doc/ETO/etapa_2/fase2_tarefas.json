@@ -1,0 +1,125 @@
+{
+  "etapa": 2,
+  "fase": 2,
+  "nome_fase": "Modelagem Relacional & Versionamento de Datasets",
+  "tarefas": [
+    {
+      "id": "E2-F2-S1-T1",
+      "name": "Modelar ligas, temporadas e times",
+      "sprint": 1,
+      "status": "planned",
+      "branch_feature": "feature/e2-f2-s1-t1-schema-league-season-team",
+      "objective": "Criar modelos Prisma e migrações para League, Season e Team com relacionamentos corretos.",
+      "criteria": [
+        "Modelos League, Season e Team definidos no schema Prisma",
+        "Migração aplicada com sucesso criando as três tabelas",
+        "Relacionamentos entre Season e League, e entre Team e League/Season definidos conforme o modelo da aplicação"
+      ]
+    },
+    {
+      "id": "E2-F2-S1-T2",
+      "name": "Modelar partidas (matches) com resultado básico",
+      "sprint": 1,
+      "status": "planned",
+      "branch_feature": "feature/e2-f2-s1-t2-schema-matches",
+      "objective": "Criar o modelo Match com relacionamentos para Season e Times, incluindo gols e resultado 3-way.",
+      "criteria": [
+        "Modelo Match definido no schema Prisma",
+        "Migração aplicada criando a tabela matches",
+        "Relacionamentos para Season, mandante e visitante funcionando",
+        "Campo de resultado 3-way disponível para consultas futuras"
+      ]
+    },
+    {
+      "id": "E2-F2-S1-T3",
+      "name": "Índices e sanidade básica do schema núcleo",
+      "sprint": 1,
+      "status": "planned",
+      "branch_feature": "feature/e2-f2-s1-t3-core-indexes",
+      "objective": "Adicionar índices e constraints principais para o núcleo League/Season/Team/Match.",
+      "criteria": [
+        "Índices por temporada/rodada criados",
+        "Constraint de unicidade para partida por (season, rodada, mandante, visitante)",
+        "Consultas simples por temporada/time respondendo com boa performance"
+      ]
+    },
+    {
+      "id": "E2-F2-S2-T1",
+      "name": "Tabela de datasets versionados",
+      "sprint": 2,
+      "status": "planned",
+      "branch_feature": "feature/e2-f2-s2-t1-datasets-table",
+      "objective": "Criar o modelo Dataset para registrar ingestões com fonte, temporada e status.",
+      "criteria": [
+        "Modelo Dataset definido no schema Prisma",
+        "Migração aplicada criando a tabela datasets",
+        "Campos de fonte, temporada, tipo, status e timestamps disponíveis"
+      ]
+    },
+    {
+      "id": "E2-F2-S2-T2",
+      "name": "Tabela de snapshots de tabela",
+      "sprint": 2,
+      "status": "planned",
+      "branch_feature": "feature/e2-f2-s2-t2-standing-snapshots",
+      "objective": "Criar o modelo StandingSnapshot representando a classificação por rodada.",
+      "criteria": [
+        "Modelo StandingSnapshot definido no schema Prisma",
+        "Migração aplicada criando a tabela standing_snapshots",
+        "Campos de pontos, vitórias, empates, derrotas, gols pró/contra e posição disponíveis"
+      ]
+    },
+    {
+      "id": "E2-F2-S2-T3",
+      "name": "Amarrar matches e datasets",
+      "sprint": 2,
+      "status": "planned",
+      "branch_feature": "feature/e2-f2-s2-t3-match-dataset-link",
+      "objective": "Adicionar relacionamento entre Match e Dataset para rastrear a origem dos dados de cada partida.",
+      "criteria": [
+        "Campo de relacionamento (ex.: datasetId) adicionado em Match",
+        "Migração aplicada com sucesso",
+        "É possível consultar quais partidas pertencem a um determinado Dataset"
+      ]
+    },
+    {
+      "id": "E2-F2-S3-T1",
+      "name": "Modelo para versão de esquema de features",
+      "sprint": 3,
+      "status": "planned",
+      "branch_feature": "feature/e2-f2-s3-t1-feature-schema-model",
+      "objective": "Criar modelo para registrar versões de esquemas de features.",
+      "criteria": [
+        "Modelo FeatureSchema definido no schema Prisma",
+        "Migração aplicada criando a tabela correspondente",
+        "Campos de nome, descrição e datas disponíveis"
+      ]
+    },
+    {
+      "id": "E2-F2-S3-T2",
+      "name": "Tabela de features por partida",
+      "sprint": 3,
+      "status": "planned",
+      "branch_feature": "feature/e2-f2-s3-t2-match-features-table",
+      "objective": "Criar modelo para armazenar features derivadas por partida associadas a um esquema de features.",
+      "criteria": [
+        "Modelo MatchFeatures definido no schema Prisma",
+        "Migração aplicada criando a tabela",
+        "Relacionamentos para Match e FeatureSchema funcionando"
+      ]
+    },
+    {
+      "id": "E2-F2-S3-T3",
+      "name": "Índices e suporte a consultas de treino",
+      "sprint": 3,
+      "status": "planned",
+      "branch_feature": "feature/e2-f2-s3-t3-train-query-support",
+      "objective": "Adicionar índices e ajustes para facilitar seleção de datasets de treino.",
+      "criteria": [
+        "Índices em colunas críticas para seleção de partidas de treino",
+        "Consultas de exemplo para seleção de partidas com features por temporada rodando com boa performance",
+        "Schema preparado para uso na Etapa 3 sem necessidade de retrabalho estrutural"
+      ]
+    }
+  ]
+}
