@@ -86,7 +86,7 @@
       "id": "E2-F2-S3-T1",
       "name": "Modelo para versão de esquema de features",
       "sprint": 3,
-      "status": "doing",
+      "status": "done",
       "branch_feature": "feature/e2-f2-s3-t1-feature-schema-model",
       "objective": "Criar modelo para registrar versões de esquemas de features.",
       "criteria": [
@@ -99,7 +99,7 @@
       "id": "E2-F2-S3-T2",
       "name": "Tabela de features por partida",
       "sprint": 3,
-      "status": "planned",
+      "status": "doing",
       "branch_feature": "feature/e2-f2-s3-t2-match-features-table",
       "objective": "Criar modelo para armazenar features derivadas por partida associadas a um esquema de features.",
       "criteria": [
