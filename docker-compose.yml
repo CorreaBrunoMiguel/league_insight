@@ -1,0 +1,13 @@
+services:
+  db:
+    image: postgres:16
+    container_name: league_insight_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: leagueinsight
+      POSTGRES_PASSWORD: leagueinsight
+      POSTGRES_DB: leagueinsight
+    ports:
+      - "15432:5432"
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
