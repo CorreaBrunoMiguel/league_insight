@@ -111,6 +111,7 @@ model Match {
   @@index([seasonId, round])
   @@index([homeTeamId])
   @@index([awayTeamId])
+  @@index([seasonId, matchDate])
 }
 
 model Dataset {
@@ -197,4 +198,5 @@ model MatchFeatures {
 
   @@unique([matchId, featureSchemaId])
   @@index([featureSchemaId])
+  @@index([matchId])
 }
