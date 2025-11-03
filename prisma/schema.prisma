@@ -84,4 +84,9 @@ model Match {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@unique([seasonId, round, homeTeamId, awayTeamId])
+  @@index([seasonId, round])
+  @@index([homeTeamId])
+  @@index([awayTeamId])
 }
