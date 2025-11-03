@@ -56,6 +56,8 @@ model Season {
 
   matches Match[]
   Dataset Dataset[]
+
+  standings StandingSnapshot[]
 }
 
 model Team {
@@ -71,6 +73,8 @@ model Team {
 
   homeMatches Match[] @relation("HomeMatches")
   awayMatches Match[] @relation("AwayMatches")
+
+  standings StandingSnapshot[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -119,4 +123,35 @@ model Dataset {
   ingestedAt DateTime? // quando a ingestão terminou
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
+}
+
+model StandingSnapshot {
+  id Int @id @default(autoincrement())
+
+  seasonId Int
+  season   Season @relation(fields: [seasonId], references: [id])
+
+  teamId Int
+  team   Team @relation(fields: [teamId], references: [id])
+
+  round Int
+
+  points Int
+  played Int
+  wins   Int
+  draws  Int
+  losses Int
+
+  goalsFor     Int
+  goalsAgainst Int
+  goalDiff     Int
+
+  position Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([seasonId, round, teamId])
+  @@index([seasonId, round])
+  @@index([teamId])
 }
