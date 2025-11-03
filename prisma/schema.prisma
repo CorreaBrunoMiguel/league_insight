@@ -13,6 +13,17 @@ enum MatchResult {
   AWAY_WIN
 }
 
+enum DatasetType {
+  HISTORICAL
+  CURRENT_SEASON
+}
+
+enum DatasetStatus {
+  PENDING
+  OK
+  FAILED
+}
+
 model AppInit {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
@@ -28,6 +39,7 @@ model League {
 
   seasons Season[]
   teams   Team[]
+  Dataset Dataset[]
 }
 
 model Season {
@@ -43,6 +55,7 @@ model Season {
   updatedAt DateTime @updatedAt
 
   matches Match[]
+  Dataset Dataset[]
 }
 
 model Team {
@@ -89,4 +102,21 @@ model Match {
   @@index([seasonId, round])
   @@index([homeTeamId])
   @@index([awayTeamId])
+}
+
+model Dataset {
+  id     Int           @id @default(autoincrement())
+  source String // ex.: "api_xpto", "csv_cbf"
+  type   DatasetType
+  status DatasetStatus @default(PENDING)
+
+  leagueId Int?
+  league   League? @relation(fields: [leagueId], references: [id])
+
+  seasonId Int?
+  season   Season? @relation(fields: [seasonId], references: [id])
+
+  ingestedAt DateTime? // quando a ingestão terminou
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 }
