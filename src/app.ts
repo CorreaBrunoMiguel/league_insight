@@ -1,5 +1,6 @@
 import express from 'express';
-import { version } from 'os';
+
+import { prisma } from './db';
 
 export function createApp() {
   const app = express();
@@ -28,6 +29,24 @@ export function createApp() {
     res.json({
       status: 'OK',
     });
+  });
+
+  app.get('/api/healthz/db', async (_req, res) => {
+    try {
+      await prisma.$queryRaw`SELECT 1`;
+
+      res.json({
+        status: 'OK',
+        db: 'up',
+      });
+    } catch (error) {
+      console.error('DB health check failed:', error);
+
+      res.status(500).json({
+        status: 'error',
+        db: 'down',
+      });
+    }
   });
 
   return app;
