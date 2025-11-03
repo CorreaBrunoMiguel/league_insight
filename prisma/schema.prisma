@@ -7,6 +7,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum MatchResult {
+  HOME_WIN
+  DRAW
+  AWAY_WIN
+}
+
 model AppInit {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
@@ -35,6 +41,8 @@ model Season {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  matches Match[]
 }
 
 model Team {
@@ -43,10 +51,36 @@ model Team {
   shortName String?
   code      String? @unique
   country   String?
-  state     String
+  state     String?
 
   leagueId Int?
   league   League? @relation(fields: [leagueId], references: [id])
+
+  homeMatches Match[] @relation("HomeMatches")
+  awayMatches Match[] @relation("AwayMatches")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Match {
+  id       Int    @id @default(autoincrement())
+  seasonId Int
+  season   Season @relation(fields: [seasonId], references: [id])
+
+  homeTeamId Int
+  homeTeam   Team @relation("HomeMatches", fields: [homeTeamId], references: [id])
+
+  awayTeamId Int
+  awayTeam   Team @relation("AwayMatches", fields: [awayTeamId], references: [id])
+
+  round     Int
+  matchDate DateTime
+
+  homeGoals Int
+  awayGoals Int
+
+  result MatchResult
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
