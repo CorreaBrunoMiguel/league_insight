@@ -112,7 +112,7 @@
       "id": "E2-F2-S3-T3",
       "name": "Índices e suporte a consultas de treino",
       "sprint": 3,
-      "status": "doing",
+      "status": "done",
       "branch_feature": "feature/e2-f2-s3-t3-train-query-support",
       "objective": "Adicionar índices e ajustes para facilitar seleção de datasets de treino.",
       "criteria": [
