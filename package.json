@@ -1,0 +1,33 @@
+{
+  "name": "league_insight",
+  "version": "0.1.0",
+  "description": "Projeto Orion focado em análise e previsão de resultados em campeonatos nacionais de pontos corridos.",
+  "directories": {
+    "doc": "doc"
+  },
+  "scripts": {
+    "dev": "tsx src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CorreaBrunoMiguel/league_insight.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CorreaBrunoMiguel/league_insight/issues"
+  },
+  "homepage": "https://github.com/CorreaBrunoMiguel/league_insight#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.5",
+    "@types/node": "^24.10.0",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  }
+}

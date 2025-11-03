@@ -1,0 +1,86 @@
+{
+  "etapa": 2,
+  "fase": 1,
+  "nome_fase": "Base PERN & Convenções Técnicas",
+  "tarefas": [
+    {
+      "id": "E2-F1-S1-T1",
+      "name": "Bootstrap do backend Node/TypeScript",
+      "sprint": 1,
+      "status": "done",
+      "branch_feature": "feature/e2-f1-s1-t1-backend-bootstrap",
+      "objective": "Criar o esqueleto inicial do backend em Node.js + TypeScript + Express.",
+      "criteria": [
+        "package.json com scripts dev, build e start",
+        "tsconfig compilando src para dist",
+        "src/app.ts e src/server.ts existem e compilam",
+        "npm run dev e npm start sobem sem crash"
+      ]
+    },
+    {
+      "id": "E2-F1-S1-T2",
+      "name": "Endpoints de status e saúde da API",
+      "sprint": 1,
+      "status": "planned",
+      "branch_feature": "feature/e2-f1-s1-t2-status-healthz",
+      "objective": "Adicionar endpoints mínimos para inspecionar a saúde da API.",
+      "criteria": [
+        "GET /api/status retorna informações básicas da aplicação",
+        "GET /api/healthz retorna OK quando a API está saudável",
+        "Endpoints cobertos por testes básicos na Etapa de testes"
+      ]
+    },
+    {
+      "id": "E2-F1-S1-T3",
+      "name": "Configurar testes automatizados e checagens básicas",
+      "sprint": 1,
+      "status": "planned",
+      "branch_feature": "feature/e2-f1-s1-t3-tests-setup",
+      "objective": "Configurar stack de testes (ex.: Jest) e criar testes iniciais para os endpoints básicos.",
+      "criteria": [
+        "Ferramenta de testes configurada (ex.: Jest)",
+        "npm test executa os testes com sucesso",
+        "Há pelo menos um teste para /api/status e /api/healthz"
+      ]
+    },
+    {
+      "id": "E2-F1-S2-T1",
+      "name": "Subir ambiente Postgres com Docker Compose",
+      "sprint": 2,
+      "status": "planned",
+      "branch_feature": "feature/e2-f1-s2-t1-postgres-docker",
+      "objective": "Criar um ambiente Postgres reprodutível via Docker Compose.",
+      "criteria": [
+        "docker-compose.yml com serviço Postgres configurado",
+        "Banco sobe localmente com um comando docker-compose up",
+        "Variáveis de ambiente claras para conexão (host, db, user, password)"
+      ]
+    },
+    {
+      "id": "E2-F1-S2-T2",
+      "name": "Integrar ORM/query builder e conexão com o banco",
+      "sprint": 2,
+      "status": "planned",
+      "branch_feature": "feature/e2-f1-s2-t2-orm-setup",
+      "objective": "Integrar um ORM/query builder (ex.: Prisma/TypeORM) com o Postgres do projeto.",
+      "criteria": [
+        "Dependências do ORM instaladas",
+        "Config de conexão baseada em variáveis de ambiente",
+        "Uma migração inicial aplicada com sucesso (ex.: tabela de teste ou inicial)"
+      ]
+    },
+    {
+      "id": "E2-F1-S2-T3",
+      "name": "Checagem de saúde da conexão com o banco",
+      "sprint": 2,
+      "status": "planned",
+      "branch_feature": "feature/e2-f1-s2-t3-db-health",
+      "objective": "Expor uma forma simples de verificar se a aplicação consegue se conectar ao Postgres.",
+      "criteria": [
+        "Rota ou endpoint que valide a conexão com o Postgres",
+        "Retorno indica claramente sucesso ou falha de conexão",
+        "Falhas de conexão geram log claro para debug"
+      ]
+    }
+  ]
+}
