@@ -7,7 +7,7 @@
       "id": "E2-F2-S1-T1",
       "name": "Modelar ligas, temporadas e times",
       "sprint": 1,
-      "status": "planned",
+      "status": "done",
       "branch_feature": "feature/e2-f2-s1-t1-schema-league-season-team",
       "objective": "Criar modelos Prisma e migrações para League, Season e Team com relacionamentos corretos.",
       "criteria": [
@@ -20,7 +20,7 @@
       "id": "E2-F2-S1-T2",
       "name": "Modelar partidas (matches) com resultado básico",
       "sprint": 1,
-      "status": "planned",
+      "status": "doing",
       "branch_feature": "feature/e2-f2-s1-t2-schema-matches",
       "objective": "Criar o modelo Match com relacionamentos para Season e Times, incluindo gols e resultado 3-way.",
       "criteria": [
