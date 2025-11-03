@@ -34,7 +34,7 @@
       "id": "E2-F1-S1-T3",
       "name": "Configurar testes automatizados e checagens básicas",
       "sprint": 1,
-      "status": "planned",
+      "status": "done",
       "branch_feature": "feature/e2-f1-s1-t3-tests-setup",
       "objective": "Configurar stack de testes (ex.: Jest) e criar testes iniciais para os endpoints básicos.",
       "criteria": [
