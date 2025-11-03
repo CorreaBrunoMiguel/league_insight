@@ -73,7 +73,7 @@
       "id": "E2-F2-S2-T3",
       "name": "Amarrar matches e datasets",
       "sprint": 2,
-      "status": "doing",
+      "status": "done",
       "branch_feature": "feature/e2-f2-s2-t3-match-dataset-link",
       "objective": "Adicionar relacionamento entre Match e Dataset para rastrear a origem dos dados de cada partida.",
       "criteria": [
@@ -86,7 +86,7 @@
       "id": "E2-F2-S3-T1",
       "name": "Modelo para versão de esquema de features",
       "sprint": 3,
-      "status": "planned",
+      "status": "doing",
       "branch_feature": "feature/e2-f2-s3-t1-feature-schema-model",
       "objective": "Criar modelo para registrar versões de esquemas de features.",
       "criteria": [
