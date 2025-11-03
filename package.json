@@ -23,6 +23,8 @@
   },
   "homepage": "https://github.com/CorreaBrunoMiguel/league_insight#readme",
   "dependencies": {
+    "@prisma/client": "^6.18.0",
+    "dotenv": "^17.2.3",
     "express": "^5.1.0"
   },
   "devDependencies": {
@@ -31,6 +33,7 @@
     "@types/node": "^24.10.0",
     "@types/supertest": "^6.0.3",
     "jest": "^29.7.0",
+    "prisma": "^6.18.0",
     "supertest": "^7.1.4",
     "ts-jest": "^29.4.5",
     "tsx": "^4.20.6",
