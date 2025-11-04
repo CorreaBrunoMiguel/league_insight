@@ -33,7 +33,7 @@
       "id": "E2-F3-S1-T3",
       "name": "Logging e idempotência básica dos jobs históricos",
       "sprint": 1,
-      "status": "planned",
+      "status": "done",
       "branch_feature": "feature/e2-f3-s1-t3-ingest-logging-idempotency",
       "objective": "Adicionar logging estruturado e proteção contra reprocessamento acidental de temporadas históricas.",
       "criteria": [
