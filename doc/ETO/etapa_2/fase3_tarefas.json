@@ -20,7 +20,7 @@
       "id": "E2-F3-S1-T2",
       "name": "Generalizar ingestão para múltiplas temporadas históricas",
       "sprint": 1,
-      "status": "doing",
+      "status": "done",
       "branch_feature": "feature/e2-f3-s1-t2-ingest-multi-seasons",
       "objective": "Permitir que o job de ingestão processe várias temporadas históricas em sequência.",
       "criteria": [
