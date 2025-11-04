@@ -8,6 +8,7 @@ type CliArgs = {
   seasonYear: number;
   source: string;
   filePath: string;
+  force: boolean;
 };
 
 function parseCliArgs(): CliArgs {
@@ -32,7 +33,7 @@ function parseCliArgs(): CliArgs {
         map[key] = next;
         i++; // pula o próximo
       } else {
-        map[key] = 'true'; // só flag booleana, se quiser no futuro
+        map[key] = 'true'; // só flag booleana
       }
     }
   }
@@ -41,6 +42,9 @@ function parseCliArgs(): CliArgs {
   const seasonYearStr = map['seasonYear'];
   const source = map['source'];
   const filePath = map['file'];
+  const forceFlag = map['force'];
+  const force =
+    forceFlag === 'true' || forceFlag === '1' || forceFlag === 'yes';
 
   if (!leagueCode || !seasonYearStr || !source || !filePath) {
     console.error(
@@ -55,7 +59,7 @@ function parseCliArgs(): CliArgs {
     process.exit(1);
   }
 
-  return { leagueCode, seasonYear, source, filePath };
+  return { leagueCode, seasonYear, source, filePath, force };
 }
 
 type RawMatchRow = {
@@ -126,14 +130,15 @@ async function ingestSeasonFromCsv(
   leagueId: number,
   seasonId: number,
   datasetId: number
-) {
-  return new Promise<void>((resolve, reject) => {
+): Promise<number> {
+  return new Promise<number>((resolve, reject) => {
     const parser = parse({
       columns: true,
       trim: true,
     });
 
     const stream = createReadStream(args.filePath).pipe(parser);
+    let processedCount = 0;
 
     stream.on('error', (err) => {
       reject(err);
@@ -159,8 +164,23 @@ async function ingestSeasonFromCsv(
 
           const result = computeResult(homeGoals, awayGoals);
 
-          await prisma.match.create({
-            data: {
+          await prisma.match.upsert({
+            where: {
+              seasonId_round_homeTeamId_awayTeamId: {
+                seasonId,
+                round,
+                homeTeamId: homeTeam.id,
+                awayTeamId: awayTeam.id,
+              },
+            },
+            update: {
+              matchDate,
+              homeGoals,
+              awayGoals,
+              result,
+              datasetId,
+            },
+            create: {
               seasonId,
               homeTeamId: homeTeam.id,
               awayTeamId: awayTeam.id,
@@ -172,9 +192,11 @@ async function ingestSeasonFromCsv(
               datasetId,
             },
           });
+
+          processedCount++;
         }
 
-        resolve();
+        resolve(processedCount);
       } catch (err) {
         reject(err);
       }
@@ -185,26 +207,56 @@ async function ingestSeasonFromCsv(
 async function main() {
   const args = parseCliArgs();
   console.log(
-    `Iniciando ingestão histórica: league=${args.leagueCode}, seasonYear=${args.seasonYear}, source=${args.source}`
+    `Iniciando ingestão histórica: league=${args.leagueCode}, seasonYear=${args.seasonYear}, source=${args.source}, force=${args.force}`
   );
 
   const league = await getOrCreateLeague(args.leagueCode);
   const season = await getOrCreateSeason(league.id, args.seasonYear);
 
-  const dataset = await prisma.dataset.create({
-    data: {
-      source: args.source,
-      type: 'HISTORICAL',
-      status: 'PENDING',
+  const existingDataset = await prisma.dataset.findFirst({
+    where: {
       leagueId: league.id,
       seasonId: season.id,
+      source: args.source,
+      type: 'HISTORICAL',
     },
   });
+
+  if (existingDataset && !args.force) {
+    console.log(
+      `Dataset histórico já existe para league=${args.leagueCode}, season=${args.seasonYear}, source=${args.source}. Use --force=true para reprocessar.`
+    );
+    await prisma.$disconnect();
+    return;
+  }
+
+  const dataset = existingDataset
+    ? await prisma.dataset.update({
+        where: { id: existingDataset.id },
+        data: {
+          status: 'PENDING',
+          ingestedAt: null,
+        },
+      })
+    : await prisma.dataset.create({
+        data: {
+          source: args.source,
+          type: 'HISTORICAL',
+          status: 'PENDING',
+          leagueId: league.id,
+          seasonId: season.id,
+        },
+      });
 
   const start = Date.now();
 
   try {
-    await ingestSeasonFromCsv(args, league.id, season.id, dataset.id);
+    const processedCount = await ingestSeasonFromCsv(
+      args,
+      league.id,
+      season.id,
+      dataset.id
+    );
 
     await prisma.dataset.update({
       where: { id: dataset.id },
@@ -218,7 +270,7 @@ async function main() {
     console.log(
       `Ingestão concluída com sucesso em ${elapsed.toFixed(2)}s para season ${
         args.seasonYear
-      }.`
+      }. Jogos processados: ${processedCount}.`
     );
   } catch (err) {
     console.error('Erro durante ingestão da temporada:', err);
