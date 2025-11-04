@@ -11,7 +11,8 @@
     "start": "node dist/server.js",
     "test": "jest",
     "ingest:season": "tsx src/jobs/ingestSeason.ts",
-    "ingest:seasons": "tsx src/jobs/ingestSeasons.ts"
+    "ingest:seasons": "tsx src/jobs/ingestSeasons.ts",
+    "standings:season": "tsx src/jobs/buildStandingsForSeason.ts"
   },
   "repository": {
     "type": "git",
