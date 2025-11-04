@@ -9,7 +9,8 @@
     "dev": "tsx src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "test": "jest"
+    "test": "jest",
+    "ingest:season": "tsx src/jobs/ingestSeason.ts"
   },
   "repository": {
     "type": "git",
@@ -24,10 +25,12 @@
   "homepage": "https://github.com/CorreaBrunoMiguel/league_insight#readme",
   "dependencies": {
     "@prisma/client": "^6.18.0",
+    "csv-parse": "^6.1.0",
     "dotenv": "^17.2.3",
     "express": "^5.1.0"
   },
   "devDependencies": {
+    "@types/csv-parse": "^1.1.12",
     "@types/express": "^5.0.5",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.10.0",
