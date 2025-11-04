@@ -10,7 +10,8 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "test": "jest",
-    "ingest:season": "tsx src/jobs/ingestSeason.ts"
+    "ingest:season": "tsx src/jobs/ingestSeason.ts",
+    "ingest:seasons": "tsx src/jobs/ingestSeasons.ts"
   },
   "repository": {
     "type": "git",
