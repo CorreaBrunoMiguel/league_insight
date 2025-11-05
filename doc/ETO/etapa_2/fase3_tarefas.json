@@ -72,7 +72,7 @@
       "id": "E2-F3-S2-T3",
       "name": "Integração pipelines históricos + standings",
       "sprint": 2,
-      "status": "planned",
+      "status": "done",
       "branch_feature": "feature/e2-f3-s2-t3-integrate-ingest-and-standings",
       "objective": "Costurar os jobs de ingestão histórica e reconstrução de standings em um fluxo coerente.",
       "criteria": [
