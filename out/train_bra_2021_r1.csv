@@ -1,0 +1,11 @@
+matchId,seasonId,round,matchDate,homeTeamId,awayTeamId,homeTeamName,awayTeamName,homeGoals,awayGoals,result,preHome_points,preHome_played,preHome_position,preAway_points,preAway_played,preAway_position,feat_homePoints,feat_awayPoints,feat_homeGoalDiff,feat_awayGoalDiff,feat_homeRecentForm,feat_awayRecentForm
+1,1,1,2021-05-29T00:00:00.000Z,1,2,Cuiabá,Juventude,2,2,DRAW,,,,,,,,,,,,
+2,1,1,2021-05-29T00:00:00.000Z,3,4,Bahia,Santos,3,0,HOME_WIN,,,,,,,,,,,,
+3,1,1,2021-05-29T00:00:00.000Z,5,6,São Paulo,Fluminense,0,0,DRAW,,,,,,,,,,,,
+4,1,1,2021-05-30T00:00:00.000Z,7,8,Atlético-MG,Fortaleza,1,2,AWAY_WIN,,,,,,,,,,,,
+5,1,1,2021-05-30T00:00:00.000Z,9,10,Flamengo,Palmeiras,1,0,HOME_WIN,,,,,,,,,,,,
+6,1,1,2021-05-30T00:00:00.000Z,11,12,Ceará,Grêmio,3,2,HOME_WIN,,,,,,,,,,,,
+7,1,1,2021-05-30T00:00:00.000Z,13,14,Corinthians,Atlético-GO,0,1,AWAY_WIN,,,,,,,,,,,,
+8,1,1,2021-05-30T00:00:00.000Z,15,16,Chapecoense,Bragantino,0,3,AWAY_WIN,,,,,,,,,,,,
+9,1,1,2021-05-30T00:00:00.000Z,17,18,Athletico-PR,América-MG,1,0,HOME_WIN,,,,,,,,,,,,
+10,1,1,2021-05-30T00:00:00.000Z,19,20,Internacional,Sport,2,2,DRAW,,,,,,,,,,,,
