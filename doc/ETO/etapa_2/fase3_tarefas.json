@@ -98,7 +98,7 @@
       "id": "E2-F3-S3-T2",
       "name": "Ingestão incremental de novas rodadas",
       "sprint": 3,
-      "status": "planned",
+      "status": "done",
       "branch_feature": "feature/e2-f3-s3-t2-current-season-incremental",
       "objective": "Permitir ingestão apenas das novas rodadas concluídas da temporada atual.",
       "criteria": [
@@ -111,7 +111,7 @@
       "id": "E2-F3-S3-T3",
       "name": "Rotina unificada de atualização da temporada atual",
       "sprint": 3,
-      "status": "planned",
+      "status": "done",
       "branch_feature": "feature/e2-f3-s3-t3-current-season-update-runner",
       "objective": "Oferecer uma entrada única para atualizar a temporada atual (ingestão incremental + standings + Dataset).",
       "criteria": [
