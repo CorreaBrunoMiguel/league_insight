@@ -46,7 +46,7 @@
       "id": "E2-F4-S2-T1",
       "name": "Endpoints de ligas e seasons",
       "sprint": 2,
-      "status": "planned",
+      "status": "done",
       "branch_feature": "feature/e2-f4-s2-t1-leagues-seasons-endpoints",
       "objective": "Expor endpoints REST para listar ligas e seasons disponíveis no sistema.",
       "criteria": [
