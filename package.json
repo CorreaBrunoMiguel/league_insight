@@ -15,7 +15,7 @@
     "standings:season": "tsx src/jobs/buildStandingsForSeason.ts",
     "consistency:season": "tsx src/jobs/checkSeasonConsistency.ts",
     "historical:season:full": "tsx src/jobs/runHistoricalSeasonPipeline.ts",
-    "current:season:incremental": "tsx src/jobs/incrementalCurrentSeason.ts"
+    "current:season:incremental": "tsx src/jobs/incrementalCurrentSeason.ts",
     "current:season:bootstrap": "tsx src/jobs/bootstrapCurrentSeason.ts"
   },
   "repository": {
