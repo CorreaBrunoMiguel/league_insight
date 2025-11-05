@@ -33,7 +33,7 @@
       "id": "E2-F4-S1-T3",
       "name": "Validação e logging do dataset de treino",
       "sprint": 1,
-      "status": "planned",
+      "status": "done",
       "branch_feature": "feature/e2-f4-s1-t3-train-dataset-validation",
       "objective": "Adicionar validações simples e logs estruturados ao processo de geração de dataset de treino.",
       "criteria": [
