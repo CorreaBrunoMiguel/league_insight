@@ -7,7 +7,7 @@
       "id": "E2-F4-S1-T1",
       "name": "Serviço interno de consulta de dataset de treino por temporada",
       "sprint": 1,
-      "status": "planned",
+      "status": "done",
       "branch_feature": "feature/e2-f4-s1-t1-train-dataset-service",
       "objective": "Implementar um serviço backend que retorne jogos de uma temporada com contexto de standings e features para uso em modelagem.",
       "criteria": [
