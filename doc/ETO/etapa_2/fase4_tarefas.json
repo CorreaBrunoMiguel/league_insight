@@ -20,7 +20,7 @@
       "id": "E2-F4-S1-T2",
       "name": "Endpoint ou CLI para export de dataset de treino",
       "sprint": 1,
-      "status": "planned",
+      "status": "done",
       "branch_feature": "feature/e2-f4-s1-t2-train-dataset-export",
       "objective": "Permitir exportar o dataset de treino gerado pela T1 em formato JSON/CSV via endpoint ou script CLI.",
       "criteria": [

@@ -17,7 +17,8 @@
     "historical:season:full": "tsx src/jobs/runHistoricalSeasonPipeline.ts",
     "current:season:incremental": "tsx src/jobs/incrementalCurrentSeason.ts",
     "current:season:bootstrap": "tsx src/jobs/bootstrapCurrentSeason.ts",
-    "current:season:update": "tsx src/jobs/runCurrentSeasonUpdate.ts"
+    "current:season:update": "tsx src/jobs/runCurrentSeasonUpdate.ts",
+    "export:train-dataset": "tsx src/jobs/exportTrainDataset.ts"
   },
   "repository": {
     "type": "git",
