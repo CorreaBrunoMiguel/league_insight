@@ -46,7 +46,7 @@
       "id": "E2-F3-S2-T1",
       "name": "Job de reconstrução de standings para 1 temporada",
       "sprint": 2,
-      "status": "planned",
+      "status": "done",
       "branch_feature": "feature/e2-f3-s2-t1-build-standings-single-season",
       "objective": "Implementar job que reconstrói a classificação rodada a rodada para uma temporada e popula StandingSnapshot.",
       "criteria": [
@@ -59,7 +59,7 @@
       "id": "E2-F3-S2-T2",
       "name": "Checks de consistência por temporada",
       "sprint": 2,
-      "status": "planned",
+      "status": "done",
       "branch_feature": "feature/e2-f3-s2-t2-standings-consistency-checks",
       "objective": "Adicionar verificações de consistência para seasons, com foco em pontos, número de jogos e integridade de standings.",
       "criteria": [
