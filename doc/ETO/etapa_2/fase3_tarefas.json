@@ -85,7 +85,7 @@
       "id": "E2-F3-S3-T1",
       "name": "Job de ingestão da temporada atual (estado inicial)",
       "sprint": 3,
-      "status": "planned",
+      "status": "done",
       "branch_feature": "feature/e2-f3-s3-t1-current-season-bootstrap",
       "objective": "Ingerir a temporada atual até a rodada mais recente e registrar Dataset CURRENT_SEASON.",
       "criteria": [
