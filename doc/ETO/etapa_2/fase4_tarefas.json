@@ -1,0 +1,124 @@
+{
+  "etapa": 2,
+  "fase": 4,
+  "nome_fase": "Serviços de Dados para Modelagem & Observatório",
+  "tarefas": [
+    {
+      "id": "E2-F4-S1-T1",
+      "name": "Serviço interno de consulta de dataset de treino por temporada",
+      "sprint": 1,
+      "status": "planned",
+      "branch_feature": "feature/e2-f4-s1-t1-train-dataset-service",
+      "objective": "Implementar um serviço backend que retorne jogos de uma temporada com contexto de standings e features para uso em modelagem.",
+      "criteria": [
+        "Serviço recebe seasonId (ou leagueCode+year) e intervalo de rodadas",
+        "Retorno inclui dados de Match, StandingSnapshot pré-jogo e MatchFeatures (quando disponíveis)",
+        "Serviço é exposto como função/módulo reutilizável dentro do backend"
+      ]
+    },
+    {
+      "id": "E2-F4-S1-T2",
+      "name": "Endpoint ou CLI para export de dataset de treino",
+      "sprint": 1,
+      "status": "planned",
+      "branch_feature": "feature/e2-f4-s1-t2-train-dataset-export",
+      "objective": "Permitir exportar o dataset de treino gerado pela T1 em formato JSON/CSV via endpoint ou script CLI.",
+      "criteria": [
+        "Existe uma forma clara de chamar a exportação (endpoint REST ou script npm)",
+        "É possível especificar season/intervalo de rodadas",
+        "Export apresenta contagem de jogos e metadados básicos (season, rodadas)"
+      ]
+    },
+    {
+      "id": "E2-F4-S1-T3",
+      "name": "Validação e logging do dataset de treino",
+      "sprint": 1,
+      "status": "planned",
+      "branch_feature": "feature/e2-f4-s1-t3-train-dataset-validation",
+      "objective": "Adicionar validações simples e logs estruturados ao processo de geração de dataset de treino.",
+      "criteria": [
+        "Erros de consistência (ex.: jogo sem snapshot prévio quando exigido) são detectados e logados",
+        "Resumo com número de jogos válidos, descartados e motivo",
+        "Mensagens de log facilitam debug de datasets problemáticos"
+      ]
+    },
+    {
+      "id": "E2-F4-S2-T1",
+      "name": "Endpoints de ligas e seasons",
+      "sprint": 2,
+      "status": "planned",
+      "branch_feature": "feature/e2-f4-s2-t1-leagues-seasons-endpoints",
+      "objective": "Expor endpoints REST para listar ligas e seasons disponíveis no sistema.",
+      "criteria": [
+        "GET /leagues retorna lista básica de ligas",
+        "GET /leagues/:leagueCode/seasons retorna seasons da liga",
+        "GET /seasons/:seasonId retorna detalhes de uma temporada"
+      ]
+    },
+    {
+      "id": "E2-F4-S2-T2",
+      "name": "Endpoint de standings por rodada",
+      "sprint": 2,
+      "status": "planned",
+      "branch_feature": "feature/e2-f4-s2-t2-standings-endpoint",
+      "objective": "Permitir consulta da tabela de classificação de uma season por rodada via API.",
+      "criteria": [
+        "GET /seasons/:seasonId/standings?round=X retorna tabela da rodada X",
+        "Se round não for informado, retorna a última rodada disponível",
+        "Resposta inclui posição, pontos, vitórias, empates, derrotas, gols pró/contra e saldo"
+      ]
+    },
+    {
+      "id": "E2-F4-S2-T3",
+      "name": "Endpoint de partidas com filtros",
+      "sprint": 2,
+      "status": "planned",
+      "branch_feature": "feature/e2-f4-s2-t3-matches-endpoint",
+      "objective": "Expor endpoint para listar partidas com filtros por season, rodada, time e resultado.",
+      "criteria": [
+        "GET /seasons/:seasonId/matches aceita filtros por round, intervalo de rodadas e teamId",
+        "Opcionalmente aceita filtro por result (HOME_WIN, DRAW, AWAY_WIN)",
+        "Resultados são ordenados por rodada/data de forma consistente"
+      ]
+    },
+    {
+      "id": "E2-F4-S3-T1",
+      "name": "Endpoint de healthcheck e versão da API",
+      "sprint": 3,
+      "status": "planned",
+      "branch_feature": "feature/e2-f4-s3-t1-health-and-version",
+      "objective": "Adicionar endpoints simples de healthcheck e versão para a API do LeagueInsight.",
+      "criteria": [
+        "GET /health responde status geral da API e conexão com o banco",
+        "GET /version retorna a versão da aplicação/API",
+        "Endpoints são leves e adequados para uso por monitoramento externo"
+      ]
+    },
+    {
+      "id": "E2-F4-S3-T2",
+      "name": "Documentação mínima dos endpoints (Markdown)",
+      "sprint": 3,
+      "status": "planned",
+      "branch_feature": "feature/e2-f4-s3-t2-api-docs",
+      "objective": "Criar um documento de referência rápida da API com endpoints, parâmetros e exemplos.",
+      "criteria": [
+        "Existe um arquivo doc/api_reference.md (ou similar) versionado no repositório",
+        "Cada endpoint possui descrição, parâmetros e exemplo de resposta",
+        "Documento é legível para uso como referência por você e futuros devs"
+      ]
+    },
+    {
+      "id": "E2-F4-S3-T3",
+      "name": "Organização da camada de serviços de dados",
+      "sprint": 3,
+      "status": "planned",
+      "branch_feature": "feature/e2-f4-s3-t3-data-services-layer",
+      "objective": "Organizar a lógica de consultas em serviços/módulos reutilizáveis em vez de deixá-las espalhadas em rotas/controllers.",
+      "criteria": [
+        "Existem módulos/serviços claros para consultas de treino e de observatório",
+        "Rotas/controllers chamam funções de serviço em vez de acessar o Prisma diretamente",
+        "Estrutura facilita reutilização futura na Etapa 3 (modelos) e no frontend"
+      ]
+    }
+  ]
+}
