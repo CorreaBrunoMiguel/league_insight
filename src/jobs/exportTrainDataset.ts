@@ -1,218 +1,245 @@
-// src/jobs/exportTrainDataset.ts
-import { writeFileSync } from 'node:fs';
+// src/services/trainDatasetService.ts
 import { prisma } from '../db';
-import {
-  getTrainDatasetForSeason,
-  TrainDatasetParams,
-  TrainMatchExample,
-} from '../services/trainDatasetService';
 
-type CliArgs = {
-  seasonId?: number;
-  leagueCode?: string;
-  seasonYear?: number;
+export type TrainDatasetSeasonSelector =
+  | {
+      seasonId: number;
+      leagueCode?: never;
+      seasonYear?: never;
+    }
+  | {
+      seasonId?: never;
+      leagueCode: string;
+      seasonYear: number;
+    };
+
+export type TrainDatasetParams = TrainDatasetSeasonSelector & {
   roundStart?: number;
   roundEnd?: number;
   featureSchemaCode?: string;
-  format: 'json' | 'csv';
-  out?: string;
 };
 
-function parseCliArgs(): CliArgs {
-  const args = process.argv.slice(2);
-  const map: Record<string, string> = {};
+export type TeamStandingSnapshotView = {
+  teamId: number;
+  round: number;
+  points: number;
+  played: number;
+  wins: number;
+  draws: number;
+  losses: number;
+  goalsFor: number;
+  goalsAgainst: number;
+  goalDiff: number;
+  position: number;
+};
 
-  for (let i = 0; i < args.length; i++) {
-    const arg = args[i];
+export type MatchFeaturesView = {
+  homePoints?: number | null;
+  awayPoints?: number | null;
+  homeGoalDiff?: number | null;
+  awayGoalDiff?: number | null;
+  homeRecentForm?: number | null;
+  awayRecentForm?: number | null;
+};
 
-    if (!arg.startsWith('--')) continue;
+export type TrainMatchExample = {
+  matchId: number;
+  seasonId: number;
+  round: number;
+  matchDate: Date;
+  homeTeamId: number;
+  awayTeamId: number;
+  homeTeamName: string;
+  awayTeamName: string;
+  homeGoals: number;
+  awayGoals: number;
+  result: string;
+  preMatchStandingHome: TeamStandingSnapshotView | null;
+  preMatchStandingAway: TeamStandingSnapshotView | null;
+  features: MatchFeaturesView | null;
+};
 
-    if (arg.includes('=')) {
-      const [flag, value] = arg.split('=', 2);
-      const key = flag.replace(/^--/, '');
-      map[key] = value;
-    } else {
-      const key = arg.replace(/^--/, '');
-      const next = args[i + 1];
-      if (next && !next.startsWith('--')) {
-        map[key] = next;
-        i++;
-      } else {
-        map[key] = 'true';
-      }
+async function resolveSeason(selector: TrainDatasetSeasonSelector) {
+  if ('seasonId' in selector && selector.seasonId != null) {
+    const season = await prisma.season.findUnique({
+      where: { id: selector.seasonId },
+    });
+    if (!season) {
+      throw new Error(`Season com id=${selector.seasonId} não encontrada.`);
     }
+    return season;
   }
 
-  const seasonIdStr = map['seasonId'];
-  const leagueCode = map['leagueCode'];
-  const seasonYearStr = map['seasonYear'];
-  const roundStartStr = map['roundStart'];
-  const roundEndStr = map['roundEnd'];
-  const featureSchemaCode = map['featureSchemaCode'];
-  const formatRaw = map['format'] ?? 'json';
-  const out = map['out'];
-
-  const format = formatRaw === 'csv' ? 'csv' : 'json';
-
-  const seasonId = seasonIdStr != null ? Number(seasonIdStr) : undefined;
-  const seasonYear = seasonYearStr != null ? Number(seasonYearStr) : undefined;
-  const roundStart = roundStartStr != null ? Number(roundStartStr) : undefined;
-  const roundEnd = roundEndStr != null ? Number(roundEndStr) : undefined;
-
-  if (seasonId == null && (!leagueCode || seasonYear == null)) {
-    console.error(
-      'Uso: npm run export:train-dataset -- --seasonId=1 [--roundStart=1 --roundEnd=10 --featureSchemaCode=v1_basica --format=csv --out=./out.csv]'
-    );
-    console.error(
-      '   ou: npm run export:train-dataset -- --leagueCode=BRA_SERIE_A --seasonYear=2021 [...opções]'
-    );
-    process.exit(1);
-  }
-
-  return {
-    seasonId,
-    leagueCode,
-    seasonYear,
-    roundStart,
-    roundEnd,
-    featureSchemaCode,
-    format,
-    out,
-  };
-}
-
-function datasetToCsv(rows: TrainMatchExample[]): string {
-  const header = [
-    'matchId',
-    'seasonId',
-    'round',
-    'matchDate',
-    'homeTeamId',
-    'awayTeamId',
-    'homeTeamName',
-    'awayTeamName',
-    'homeGoals',
-    'awayGoals',
-    'result',
-    'preHome_points',
-    'preHome_played',
-    'preHome_position',
-    'preAway_points',
-    'preAway_played',
-    'preAway_position',
-    'feat_homePoints',
-    'feat_awayPoints',
-    'feat_homeGoalDiff',
-    'feat_awayGoalDiff',
-    'feat_homeRecentForm',
-    'feat_awayRecentForm',
-  ];
-
-  const escape = (v: unknown): string => {
-    if (v === null || v === undefined) return '';
-    const s = String(v);
-    if (s.includes(',') || s.includes('"') || s.includes('\n')) {
-      return `"${s.replace(/"/g, '""')}"`;
-    }
-    return s;
+  const { leagueCode, seasonYear } = selector as {
+    leagueCode: string;
+    seasonYear: number;
   };
 
-  const lines = rows.map((r) => {
-    const preH = r.preMatchStandingHome;
-    const preA = r.preMatchStandingAway;
-    const f = r.features;
-
-    const cols: (string | number | null | undefined)[] = [
-      r.matchId,
-      r.seasonId,
-      r.round,
-      r.matchDate.toISOString(),
-      r.homeTeamId,
-      r.awayTeamId,
-      r.homeTeamName,
-      r.awayTeamName,
-      r.homeGoals,
-      r.awayGoals,
-      r.result,
-      preH?.points,
-      preH?.played,
-      preH?.position,
-      preA?.points,
-      preA?.played,
-      preA?.position,
-      f?.homePoints,
-      f?.awayPoints,
-      f?.homeGoalDiff,
-      f?.awayGoalDiff,
-      f?.homeRecentForm,
-      f?.awayRecentForm,
-    ];
-
-    return cols.map(escape).join(',');
+  const league = await prisma.league.findUnique({
+    where: { code: leagueCode },
   });
 
-  return [header.join(','), ...lines].join('\n');
-}
-
-async function main() {
-  const args = parseCliArgs();
-
-  const params: TrainDatasetParams =
-    args.seasonId != null
-      ? {
-          seasonId: args.seasonId,
-          roundStart: args.roundStart,
-          roundEnd: args.roundEnd,
-          featureSchemaCode: args.featureSchemaCode,
-        }
-      : {
-          leagueCode: args.leagueCode!,
-          seasonYear: args.seasonYear!,
-          roundStart: args.roundStart,
-          roundEnd: args.roundEnd,
-          featureSchemaCode: args.featureSchemaCode,
-        };
-
-  console.log('Gerando dataset de treino com parâmetros:', {
-    seasonId: params['seasonId'],
-    leagueCode: (params as any).leagueCode,
-    seasonYear: (params as any).seasonYear,
-    roundStart: params.roundStart,
-    roundEnd: params.roundEnd,
-    featureSchemaCode: params.featureSchemaCode,
-    format: args.format,
-    out: args.out,
-  });
-
-  try {
-    const dataset = await getTrainDatasetForSeason(params);
-
-    console.log(`Total de jogos no dataset: ${dataset.length}`);
-
-    let content: string;
-
-    if (args.format === 'csv') {
-      content = datasetToCsv(dataset);
-    } else {
-      content = JSON.stringify(dataset, null, 2);
-    }
-
-    if (args.out) {
-      writeFileSync(args.out, content, { encoding: 'utf-8' });
-      console.log(`Dataset salvo em: ${args.out}`);
-    } else {
-      // stdout
-      console.log(content);
-    }
-  } catch (err) {
-    console.error('Erro ao gerar/exportar dataset de treino:', err);
-    process.exitCode = 1;
-  } finally {
-    await prisma.$disconnect();
+  if (!league) {
+    throw new Error(`League com code=${leagueCode} não encontrada.`);
   }
+
+  const season = await prisma.season.findFirst({
+    where: {
+      leagueId: league.id,
+      year: seasonYear,
+    },
+  });
+
+  if (!season) {
+    throw new Error(
+      `Season para league=${leagueCode}, year=${seasonYear} não encontrada.`
+    );
+  }
+
+  return season;
 }
 
-main().catch((err) => {
-  console.error('Erro inesperado no exportador de dataset de treino:', err);
-  process.exit(1);
-});
+export async function getTrainDatasetForSeason(
+  params: TrainDatasetParams
+): Promise<TrainMatchExample[]> {
+  const { roundStart, roundEnd, featureSchemaCode } = params;
+
+  const season = await resolveSeason(params as TrainDatasetSeasonSelector);
+  const seasonId = season.id;
+
+  // 1) Buscar matches na janela
+  const matchWhere: any = { seasonId };
+
+  if (roundStart != null || roundEnd != null) {
+    matchWhere.round = {};
+    if (roundStart != null) {
+      matchWhere.round.gte = roundStart;
+    }
+    if (roundEnd != null) {
+      matchWhere.round.lte = roundEnd;
+    }
+  }
+
+  const matches = await prisma.match.findMany({
+    where: matchWhere,
+    orderBy: [{ round: 'asc' }, { matchDate: 'asc' }, { id: 'asc' }],
+    include: {
+      homeTeam: true,
+      awayTeam: true,
+    },
+  });
+
+  if (matches.length === 0) {
+    return [];
+  }
+
+  // 2) StandingSnapshots pré-jogo (rodada anterior)
+  const prevRounds = Array.from(
+    new Set(matches.map((m) => m.round - 1).filter((r) => r > 0))
+  );
+
+  const snapshots =
+    prevRounds.length > 0
+      ? await prisma.standingSnapshot.findMany({
+          where: {
+            seasonId,
+            round: { in: prevRounds },
+          },
+        })
+      : [];
+
+  const snapshotMap = new Map<string, TeamStandingSnapshotView>();
+
+  for (const s of snapshots) {
+    const key = `${s.round}:${s.teamId}`;
+    snapshotMap.set(key, {
+      teamId: s.teamId,
+      round: s.round,
+      points: s.points,
+      played: s.played,
+      wins: s.wins,
+      draws: s.draws,
+      losses: s.losses,
+      goalsFor: s.goalsFor,
+      goalsAgainst: s.goalsAgainst,
+      goalDiff: s.goalDiff,
+      position: s.position,
+    });
+  }
+
+  // 3) Features (opcional)
+  let featuresMap = new Map<number, MatchFeaturesView>();
+
+  if (featureSchemaCode) {
+    const featureSchema = await prisma.featureSchema.findUnique({
+      where: { code: featureSchemaCode },
+    });
+
+    if (!featureSchema) {
+      throw new Error(
+        `FeatureSchema com code=${featureSchemaCode} não encontrado.`
+      );
+    }
+
+    const matchIds = matches.map((m) => m.id);
+
+    const features = await prisma.matchFeatures.findMany({
+      where: {
+        featureSchemaId: featureSchema.id,
+        matchId: {
+          in: matchIds,
+        },
+      },
+    });
+
+    featuresMap = new Map(
+      features.map((f) => [
+        f.matchId,
+        {
+          homePoints: f.homePoints,
+          awayPoints: f.awayPoints,
+          homeGoalDiff: f.homeGoalDiff,
+          awayGoalDiff: f.awayGoalDiff,
+          homeRecentForm: f.homeRecentForm,
+          awayRecentForm: f.awayRecentForm,
+        },
+      ])
+    );
+  }
+
+  // 4) Montar dataset final
+  const dataset: TrainMatchExample[] = matches.map((m) => {
+    const prevRound = m.round - 1;
+
+    const preHome =
+      prevRound > 0
+        ? snapshotMap.get(`${prevRound}:${m.homeTeamId}`) ?? null
+        : null;
+
+    const preAway =
+      prevRound > 0
+        ? snapshotMap.get(`${prevRound}:${m.awayTeamId}`) ?? null
+        : null;
+
+    const feat = featuresMap.get(m.id) ?? null;
+
+    return {
+      matchId: m.id, // <- AQUI é onde garante que cada jogo usa o id real do Match
+      seasonId: m.seasonId,
+      round: m.round,
+      matchDate: m.matchDate,
+      homeTeamId: m.homeTeamId,
+      awayTeamId: m.awayTeamId,
+      homeTeamName: m.homeTeam.name,
+      awayTeamName: m.awayTeam.name,
+      homeGoals: m.homeGoals,
+      awayGoals: m.awayGoals,
+      result: m.result,
+      preMatchStandingHome: preHome,
+      preMatchStandingAway: preAway,
+      features: feat,
+    };
+  });
+
+  return dataset;
+}
